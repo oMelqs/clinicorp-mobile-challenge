@@ -1,10 +1,10 @@
 import {NavigationContainer} from '@react-navigation/native'
 import {AppRoutes} from './app.routes'
-import {CombinedDarkTheme} from '@/styles/theme'
+import {CombinedLightTheme} from '@/styles/theme'
 
 export const Routes = () => {
   return (
-    <NavigationContainer theme={CombinedDarkTheme}>
+    <NavigationContainer theme={CombinedLightTheme}>
       <AppRoutes />
     </NavigationContainer>
   )
