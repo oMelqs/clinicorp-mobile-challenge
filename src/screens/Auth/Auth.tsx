@@ -1,10 +1,12 @@
 import React from 'react'
-import {View, Text} from 'react-native'
+import {View} from 'react-native'
+import {Text} from 'react-native-paper'
+import styles from './styles'
 
 export const Auth = () => {
   return (
-    <View>
-      <Text>Auth Screen</Text>
+    <View style={styles.container}>
+      <Text variant="headlineLarge">Acessar sua conta</Text>
     </View>
   )
 }
