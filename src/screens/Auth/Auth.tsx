@@ -1,19 +1,21 @@
 import {useState} from 'react'
 import {Keyboard, TouchableWithoutFeedback, View} from 'react-native'
-import {TextInput, Button, Text, Checkbox} from 'react-native-paper'
+import {TextInput, Button, Text} from 'react-native-paper'
 import styles from './styles'
+import {useNavigation} from '@react-navigation/native'
 
 export const Auth = () => {
+  const {navigate} = useNavigation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [checked, setChecked] = useState(false)
 
   const handleForgotPassword = () => {}
 
   const handleAuth = () => {
     console.log('Email:', email)
     console.log('Password:', password)
+    navigate('Home')
   }
 
   const handleSignUp = () => {}
@@ -55,15 +57,6 @@ export const Auth = () => {
             />
           }
         />
-        <View style={styles.rememberPasswordLabelContainer}>
-          <Checkbox
-            status={checked ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setChecked(!checked)
-            }}
-          />
-          <Text variant="labelLarge">Lembrar senha?</Text>
-        </View>
         <Button mode="contained" onPress={handleAuth} style={styles.button}>
           Entrar
         </Button>

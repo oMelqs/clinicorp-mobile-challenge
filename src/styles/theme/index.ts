@@ -11,5 +11,6 @@ export const CombinedLightTheme = {
   colors: {
     ...MD3LightTheme.colors,
     ...LightTheme.colors,
+    background: '#fff',
   },
 }
