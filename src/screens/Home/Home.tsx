@@ -54,22 +54,22 @@ export const Home = () => {
                 <Tasks key={index} task={task} />
               ))}
             </ScrollView>
-            <View style={[styles.column, {width}]}>
+            <ScrollView style={[styles.column, {width}]}>
               <Text style={styles.columnTitle} variant="titleLarge">
                 Doing
               </Text>
               {getTasksByStatus(1).map((task, index) => (
                 <Tasks key={index} task={task} />
               ))}
-            </View>
-            <View style={[styles.column, {width}]}>
+            </ScrollView>
+            <ScrollView style={[styles.column, {width}]}>
               <Text style={styles.columnTitle} variant="titleLarge">
                 Done
               </Text>
               {getTasksByStatus(2).map((task, index) => (
                 <Tasks key={index} task={task} />
               ))}
-            </View>
+            </ScrollView>
           </ScrollView>
         </>
       ) : (
