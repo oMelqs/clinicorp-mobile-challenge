@@ -7,15 +7,14 @@ import {initializeAuth} from 'firebase/auth'
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyBSoPu9zAtQPvr5fUmDJcg7mVjYLOCHnp0',
+  apiKey: 'AIzaSyCO6EIHL0AbvBr0xZCuQhRzqNT3Btz_HXo',
   authDomain: 'todolist-challenge-app.firebaseapp.com',
   projectId: 'todolist-challenge-app',
   storageBucket: 'todolist-challenge-app.appspot.com',
   messagingSenderId: '950548045121',
-  appId: '1:950548045121:web:934a8c3c90d9f22d33d5c0',
-  measurementId: 'G-F5BW9D3LPW',
+  appId: '1:950548045121:web:258f05bedea3ebfb33d5c0',
+  measurementId: 'G-T4GVM21283',
 }
-
 // Initialize Firebase
 export const FIREBASE_APP = initializeApp(firebaseConfig)
 export const FIREBASE_AUTH = initializeAuth(FIREBASE_APP)

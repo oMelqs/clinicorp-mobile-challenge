@@ -3,22 +3,27 @@ import {Keyboard, TouchableWithoutFeedback, View} from 'react-native'
 import {TextInput, Button, Text} from 'react-native-paper'
 import styles from './styles'
 import {useNavigation} from '@react-navigation/native'
+import {useAuth} from '@/contexts/auth/Auth.context'
 
 export const Auth = () => {
   const {navigate} = useNavigation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const {login, loading} = useAuth()
 
   const handleForgotPassword = () => {}
 
-  const handleAuth = () => {
+  const handleAuth = async () => {
     console.log('Email:', email)
     console.log('Password:', password)
+    await login(email, password)
     navigate('Home')
   }
 
-  const handleSignUp = () => {}
+  const handleSignUp = () => {
+    navigate('SignUp')
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -57,10 +62,18 @@ export const Auth = () => {
             />
           }
         />
-        <Button mode="contained" onPress={handleAuth} style={styles.button}>
+        <Button
+          mode="contained"
+          onPress={handleAuth}
+          style={styles.button}
+          loading={loading}>
           Entrar
         </Button>
-        <Button mode="outlined" onPress={handleSignUp} style={styles.button}>
+        <Button
+          mode="outlined"
+          onPress={handleSignUp}
+          style={styles.button}
+          disabled={loading}>
           Criar conta
         </Button>
       </View>
