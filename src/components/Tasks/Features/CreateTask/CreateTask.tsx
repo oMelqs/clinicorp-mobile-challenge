@@ -61,13 +61,7 @@ export const CreateTask = ({
   }
 
   const handleCreateTask = async () => {
-    await createTask(
-      {
-        title,
-        description,
-      },
-      image,
-    )
+    await createTask(title, description, image)
     createTaskHide()
   }
 

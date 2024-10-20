@@ -13,7 +13,7 @@ import {ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import {db, storage} from '@/services/firebase'
 import {useAuth} from '../auth/Auth.context'
 
-interface Task {
+export interface Task {
   id: string
   title: string
   description: string
@@ -23,7 +23,11 @@ interface Task {
 
 interface TasksContextProps {
   tasks: Task[]
-  createTask: (task: Omit<Task, 'id'>, imageUri: string | null) => Promise<void>
+  createTask: (
+    title: string,
+    description: string,
+    imageUri: string | null,
+  ) => Promise<void>
   updateTaskStatus: (taskId: string, status: number) => Promise<void>
   deleteTask: (taskId: string) => Promise<void>
   loading: boolean
@@ -66,7 +70,8 @@ export const TasksProvider = ({children}: {children: React.ReactNode}) => {
   }
 
   const createTask = async (
-    task: Omit<Task, 'id' | 'image' | 'userID' | 'status'>,
+    title: string,
+    description: string,
     imageUri: string | null,
   ) => {
     if (!currentUser) return
@@ -81,7 +86,8 @@ export const TasksProvider = ({children}: {children: React.ReactNode}) => {
       }
 
       await addDoc(collection(db, 'tasks'), {
-        ...task,
+        title,
+        description,
         status: 0,
         userID: currentUser.email,
         image: imageUrl,
@@ -94,6 +100,7 @@ export const TasksProvider = ({children}: {children: React.ReactNode}) => {
   }
 
   const updateTaskStatus = async (taskId: string, status: number) => {
+    if (status < 0 || status > 2) return
     try {
       const taskRef = doc(db, 'tasks', taskId)
       await updateDoc(taskRef, {status})

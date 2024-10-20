@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
   },
   column: {
     width: '100%',
-    justifyContent: 'flex-start',
   },
   columnTitle: {
     marginHorizontal: 24,

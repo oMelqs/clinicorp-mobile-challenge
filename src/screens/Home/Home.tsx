@@ -1,6 +1,6 @@
 import {View, ScrollView, Dimensions} from 'react-native'
 import styles from './styles'
-import {Text, Button} from 'react-native-paper'
+import {Text, Button, ActivityIndicator} from 'react-native-paper'
 import React, {useState} from 'react'
 import CreateTask from '@/components/Tasks/Features/CreateTask'
 import Tasks from '@/components/Tasks'
@@ -9,7 +9,7 @@ import {useTasks} from '@/contexts/tasks/Tasks.context'
 const {width} = Dimensions.get('window')
 
 export const Home = () => {
-  const {tasks} = useTasks()
+  const {tasks, loading} = useTasks()
   const [createTaskVisible, setCreateTaskVisible] = useState(false)
   const handleCreate = () => {
     setCreateTaskVisible(true)
@@ -20,6 +20,14 @@ export const Home = () => {
 
   const getTasksByStatus = (status: number) => {
     return tasks.filter((task) => task.status === status)
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.main}>
+        <ActivityIndicator />
+      </View>
+    )
   }
 
   return (
@@ -38,14 +46,14 @@ export const Home = () => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}>
-            <View style={[styles.column, {width}]}>
+            <ScrollView style={[styles.column, {width}]}>
               <Text style={styles.columnTitle} variant="titleLarge">
                 To-Do
               </Text>
               {getTasksByStatus(0).map((task, index) => (
                 <Tasks key={index} task={task} />
               ))}
-            </View>
+            </ScrollView>
             <View style={[styles.column, {width}]}>
               <Text style={styles.columnTitle} variant="titleLarge">
                 Doing
