@@ -1,14 +1,15 @@
 import {View, ScrollView, Dimensions} from 'react-native'
 import styles from './styles'
 import {Text, Button} from 'react-native-paper'
-import {tasks} from '@/mocks/tasks'
 import React, {useState} from 'react'
-import Tasks from '@/components/Tasks'
 import CreateTask from '@/components/Tasks/Features/CreateTask'
+import Tasks from '@/components/Tasks'
+import {useTasks} from '@/contexts/tasks/Tasks.context'
 
 const {width} = Dimensions.get('window')
 
 export const Home = () => {
+  const {tasks} = useTasks()
   const [createTaskVisible, setCreateTaskVisible] = useState(false)
   const handleCreate = () => {
     setCreateTaskVisible(true)

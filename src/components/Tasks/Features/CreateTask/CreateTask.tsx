@@ -4,13 +4,7 @@ import {Alert, Pressable, View} from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import styles from './styles'
 import {Image} from 'expo-image'
-
-interface Task {
-  title: string
-  description: string
-  status: number
-  image: string
-}
+import {useTasks} from '@/contexts/tasks/Tasks.context'
 
 interface CreateTaskProps {
   createTaskVisible: boolean
@@ -24,6 +18,7 @@ export const CreateTask = ({
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [image, setImage] = useState<string | null>(null)
+  const {createTask} = useTasks()
 
   const handleAddImgGallery = async () => {
     await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -65,14 +60,14 @@ export const CreateTask = ({
     )
   }
 
-  const handleCreateTask = () => {
-    const newTask: Task = {
-      title,
-      description,
-      status: 0,
-      image: image || '',
-    }
-    console.log(newTask)
+  const handleCreateTask = async () => {
+    await createTask(
+      {
+        title,
+        description,
+      },
+      image,
+    )
     createTaskHide()
   }
 
