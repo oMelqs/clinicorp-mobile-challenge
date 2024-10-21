@@ -27,6 +27,7 @@ export const Tasks = ({task}: TasksProps) => {
           <Checkbox
             status={checked ? 'checked' : 'unchecked'}
             onPress={handleUpdateStatus}
+            testID={`checkbox-${task.title}`}
           />
         )}
         <View style={styles.cardTexts}>
@@ -47,7 +48,11 @@ export const Tasks = ({task}: TasksProps) => {
         </View>
       </Card.Content>
       {task.image && (
-        <Card.Cover style={styles.cardCover} source={{uri: task.image}} />
+        <Card.Cover
+          style={styles.cardCover}
+          source={{uri: task.image}}
+          testID="image"
+        />
       )}
     </Card>
   )

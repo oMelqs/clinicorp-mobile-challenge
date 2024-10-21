@@ -70,7 +70,8 @@ export const CreateTask = ({
       visible={createTaskVisible}
       onDismiss={createTaskHide}
       contentContainerStyle={styles.container}
-      style={styles.modal}>
+      style={styles.modal}
+      testID="create-task-modal">
       <View style={styles.titleContainer}>
         <Text style={styles.title} variant="titleLarge">
           Criar tarefa

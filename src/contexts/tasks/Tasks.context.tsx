@@ -18,7 +18,7 @@ export interface Task {
   title: string
   description: string
   status: number
-  image: string
+  image?: string
 }
 
 interface TasksContextProps {

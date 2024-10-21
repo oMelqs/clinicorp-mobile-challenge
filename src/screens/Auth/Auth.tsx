@@ -41,6 +41,7 @@ export const Auth = () => {
           style={styles.input}
           keyboardType="email-address"
           autoCapitalize="none"
+          accessibilityLabel="Digite seu e-mail"
         />
         <View style={styles.passwordLabelContainer}>
           <Text variant="labelLarge">Senha</Text>
@@ -61,6 +62,7 @@ export const Auth = () => {
               onPress={() => setShowPassword(!showPassword)}
             />
           }
+          accessibilityLabel="Digite sua senha"
         />
         <Button
           mode="contained"
