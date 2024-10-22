@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import {Keyboard, TouchableWithoutFeedback, View} from 'react-native'
 import {TextInput, Button, Text} from 'react-native-paper'
 import styles from './styles'
@@ -10,14 +10,17 @@ export const Auth = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const {login, loading} = useAuth()
+  const {login, googleLogin, loading} = useAuth()
 
   const handleForgotPassword = () => {}
 
   const handleAuth = async () => {
-    console.log('Email:', email)
-    console.log('Password:', password)
     await login(email, password)
+    navigate('Home')
+  }
+
+  const handleGoogleAuth = async () => {
+    await googleLogin()
     navigate('Home')
   }
 
@@ -77,6 +80,17 @@ export const Auth = () => {
           style={styles.button}
           disabled={loading}>
           Criar conta
+        </Button>
+        <Text variant="titleSmall" style={styles.label}>
+          ou
+        </Text>
+        <Button
+          icon={'google'}
+          mode="contained"
+          onPress={handleGoogleAuth}
+          style={styles.button}
+          disabled={loading}>
+          Entrar com Google
         </Button>
       </View>
     </TouchableWithoutFeedback>

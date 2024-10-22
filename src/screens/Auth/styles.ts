@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 16,
   },
+  label: {
+    alignSelf: 'center',
+    paddingTop: 8,
+  },
 })
 
 export default styles

@@ -1,21 +1,23 @@
 import {View, ScrollView, Dimensions} from 'react-native'
 import styles from './styles'
-import {Text, Button, ActivityIndicator} from 'react-native-paper'
+import {Text, Button, ActivityIndicator, IconButton} from 'react-native-paper'
 import React, {useState} from 'react'
 import CreateTask from '@/components/Tasks/Features/CreateTask'
 import Tasks from '@/components/Tasks'
 import {useTasks} from '@/contexts/tasks/Tasks.context'
+import {useAuth} from '@/contexts/auth/Auth.context'
 
 const {width} = Dimensions.get('window')
 
 export const Home = () => {
   const {tasks, loading} = useTasks()
+  const {logout} = useAuth()
   const [createTaskVisible, setCreateTaskVisible] = useState(false)
   const handleCreate = () => {
     setCreateTaskVisible(true)
   }
-  const handleLogout = () => {
-    console.log('Logout')
+  const handleLogout = async () => {
+    await logout()
   }
 
   const getTasksByStatus = (status: number) => {
@@ -35,9 +37,14 @@ export const Home = () => {
       {tasks.length > 0 ? (
         <>
           <View style={styles.titleContainer}>
-            <Text style={styles.title} variant="titleLarge">
-              Tarefas
-            </Text>
+            <View style={styles.exitContainer}>
+              <Button icon="exit-to-app" mode="text" onPress={handleLogout}>
+                Sair
+              </Button>
+              <Text style={styles.title} variant="titleLarge">
+                Tarefas
+              </Text>
+            </View>
             <Button icon="plus" mode="contained" onPress={handleCreate}>
               Criar
             </Button>

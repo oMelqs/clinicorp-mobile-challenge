@@ -54,7 +54,7 @@ export const TasksProvider = ({children}: {children: React.ReactNode}) => {
     try {
       const q = query(
         collection(db, 'tasks'),
-        where('userID', '==', currentUser.email),
+        where('userID', '==', currentUser),
       )
       const querySnapshot = await getDocs(q)
       const tasksData: Task[] = querySnapshot.docs.map((doc) => ({
@@ -89,7 +89,7 @@ export const TasksProvider = ({children}: {children: React.ReactNode}) => {
         title,
         description,
         status: 0,
-        userID: currentUser.email,
+        userID: currentUser,
         image: imageUrl,
       })
     } catch (error) {

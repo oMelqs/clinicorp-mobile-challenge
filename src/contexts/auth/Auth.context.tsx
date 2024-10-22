@@ -6,7 +6,6 @@ import React, {
   ReactNode,
 } from 'react'
 import {
-  User,
   UserCredential,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -15,10 +14,13 @@ import {
 import {FIREBASE_AUTH} from '@/services/firebase'
 import Toast from 'react-native-toast-message'
 import {useNavigation} from '@react-navigation/native'
+import * as WebBrowser from 'expo-web-browser'
+import {useOAuth, useUser, useAuth as useClerkAuth} from '@clerk/clerk-expo'
 
 interface AuthContextType {
-  currentUser: User | null
+  currentUser: string | null
   loading: boolean
+  googleLogin: () => Promise<void>
   login: (email: string, password: string) => Promise<UserCredential>
   logout: () => Promise<void>
 }
@@ -36,20 +38,59 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
+WebBrowser.maybeCompleteAuthSession()
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const googleOAuth = useOAuth({strategy: 'oauth_google'})
+  const {user, isLoaded} = useUser()
+  const clerkAuth = useClerkAuth()
+  const [currentUser, setCurrentUser] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const {navigate} = useNavigation()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      setCurrentUser(user)
+      if (user?.email) setCurrentUser(user?.email)
       setLoading(false)
     })
 
     return unsubscribe
   }, [])
 
+  useEffect(() => {
+    WebBrowser.warmUpAsync()
+    return () => {
+      WebBrowser.coolDownAsync()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      setCurrentUser(user.primaryEmailAddress?.emailAddress ?? null)
+      navigate('Home')
+    }
+  }, [isLoaded, user, navigate])
+
+  const googleLogin = async () => {
+    setLoading(true)
+    try {
+      const oAuthFlow = await googleOAuth.startOAuthFlow()
+      if (oAuthFlow.authSessionResult?.type === 'success') {
+        if (oAuthFlow.setActive) {
+          await oAuthFlow.setActive({session: oAuthFlow.createdSessionId})
+          if (user && user.primaryEmailAddress?.emailAddress) {
+            setCurrentUser(user.primaryEmailAddress?.emailAddress)
+          }
+          return
+        }
+        setLoading(false)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
   const login = async (email: string, password: string) => {
     setLoading(true)
     try {
@@ -58,7 +99,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         email,
         password,
       )
-      setCurrentUser(userCredential.user)
+      setCurrentUser(userCredential.user.email)
       Toast.show({
         type: 'success',
         text1: 'Login Successful!',
@@ -79,7 +120,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const logout = async () => {
     setLoading(true)
     try {
-      await signOut(FIREBASE_AUTH)
+      if (user) {
+        await clerkAuth.signOut()
+      }
+      if (FIREBASE_AUTH.currentUser) {
+        await signOut(FIREBASE_AUTH)
+      }
       setCurrentUser(null)
       Toast.show({
         type: 'success',
@@ -100,6 +146,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const value: AuthContextType = {
     currentUser,
     loading,
+    googleLogin,
     login,
     logout,
   }

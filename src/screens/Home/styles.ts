@@ -15,13 +15,17 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 24,
+    marginRight: 16,
     marginBottom: 8,
+  },
+  exitContainer: {
+    flexDirection: 'row',
   },
   title: {
     alignSelf: 'center',
     fontWeight: 700,
     fontSize: 24,
+    paddingLeft: 8,
   },
   column: {
     width: '100%',
