@@ -8,6 +8,10 @@ The Clinicorp Mobile Challenge is a task management application that allows user
 
 ## Important Libraries
 
+### Authentication
+
+- **clerk**: The library that abstracts google login.
+
 ### React Native
 
 - **react-native**: The core library for building mobile applications using React.
